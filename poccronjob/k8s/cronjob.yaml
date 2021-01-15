@@ -1,0 +1,21 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: callout
+spec:
+  schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 0
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: callout
+              image: buildpack-deps:curl
+              imagePullPolicy: IfNotPresent
+              args:
+                - /bin/sh
+                - -ec
+                - curl http://192.168.15.175:8080/pocCronJob
+          restartPolicy: Never
